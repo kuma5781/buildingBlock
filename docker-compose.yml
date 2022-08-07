@@ -7,4 +7,19 @@ services:
     volumes:
       - ".:/root/play-docker"
     working_dir: /root/play-docker
-    entrypoint: bash -c "sb1t run"
+    environment:
+      - MYSQL_DRIVER=com.mysql.cj.jdbc.Driver
+      - MYSQL_URL=jdbc:mysql://localhost:3306/building_block_db
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=root
+    entrypoint: bash -c "sbt run"
+
+  mysql:
+    image: mysql:8
+    volumes:
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
+      - ./docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
