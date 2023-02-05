@@ -9,7 +9,7 @@ services:
     working_dir: /root/play-docker
     environment:
       - MYSQL_DRIVER=com.mysql.cj.jdbc.Driver
-      - MYSQL_URL=jdbc:mysql://localhost:3306/building_block_db
+      - MYSQL_URL=jdbc:mysql://mysql:3306/building_block
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=root
     entrypoint: bash -c "sbt run"
