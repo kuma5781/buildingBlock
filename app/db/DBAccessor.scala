@@ -1,6 +1,7 @@
 package db
 
-import java.sql.{DriverManager, ResultSet, Statement}
+import scalikejdbc._
+
 import scala.concurrent.{ExecutionContext, Future}
 
 object DBAccessor {
@@ -10,27 +11,14 @@ object DBAccessor {
   private val password = DBProperties.password
 
   Class.forName(driver)
+  ConnectionPool.singleton(url, username, password)
 
-  def selectRecords[T](sql: String, getRecord: ResultSet => T)(implicit ec: ExecutionContext): Future[Seq[T]] = {
-    val readRecords = (stmt: Statement) => {
-      val rs = stmt.executeQuery(sql)
-      var records = Seq.empty[T]
-      while (rs.next) records = records :+ getRecord(rs)
-      records
+  def selectRecords[T](sql: String, getRecord: WrappedResultSet => T)(implicit ec: ExecutionContext): Future[Seq[T]] = {
+    Future {
+      DB readOnly { implicit session =>
+        SQL(sql).map(getRecord).list().apply()
+      }
     }
-    connect(readRecords)
-  }
-
-  private def connect[T](fun: Statement => T)(implicit ec: ExecutionContext): Future[T] = {
-    val con = DriverManager.getConnection(url, username, password)
-    val resultFuture = Future {
-      val stmt = con.createStatement
-      fun(stmt)
-    }
-    for {
-      result <- resultFuture
-      _ = con.close()
-    } yield result
   }
 
 }

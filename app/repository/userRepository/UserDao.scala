@@ -3,6 +3,7 @@ package repository.userRepository
 import com.google.inject.ImplementedBy
 import db.DBAccessor
 import entity.UserEntity
+import scalikejdbc.WrappedResultSet
 
 import java.sql.ResultSet
 import javax.inject.Inject
@@ -18,9 +19,9 @@ class UserDaoImpl @Inject()()(implicit ec: ExecutionContext) extends UserDao {
   
   private val tableName = "users"
 
-  private val userDto = (rs: ResultSet) => {
-    val id = rs.getInt("id")
-    val name = rs.getString("name")
+  private val userDto = (rs: WrappedResultSet) => {
+    val id = rs.int("id")
+    val name = rs.string("name")
     UserEntity(id, name)
   }
 
