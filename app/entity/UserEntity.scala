@@ -3,6 +3,7 @@ package entity
 /**
  * User
  * @param id
- * @param name
+ * @param schoolId
+ * @param user_name
  */
-case class UserEntity(id: Int, name: String)
+case class UserEntity(id: Int, schoolId: Int, user_name: String)

@@ -4,8 +4,6 @@ import com.google.inject.ImplementedBy
 import db.DBAccessor
 import entity.UserEntity
 import scalikejdbc.WrappedResultSet
-
-import java.sql.ResultSet
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -21,11 +19,12 @@ class UserDaoImpl @Inject()()(implicit ec: ExecutionContext) extends UserDao {
 
   private val userDto = (rs: WrappedResultSet) => {
     val id = rs.int("id")
-    val name = rs.string("name")
-    UserEntity(id, name)
+    val schoolId = rs.int("school_id")
+    val userName = rs.string("user_name")
+    UserEntity(id, schoolId, userName)
   }
 
-  /** @inheritdoc */
+  /** 全ユーザを取得します */
   override def selectAll(): Future[Seq[UserEntity]] = {
     val sql = s"SELECT * FROM $tableName"
       DBAccessor.selectRecords(sql, userDto)

@@ -14,7 +14,8 @@ class UserController @Inject()(userService: UserService)(implicit ex: ExecutionC
   implicit val userWrites = new Writes[User] {
     def writes(user: User): JsObject = Json.obj(
       "id" -> user.id,
-      "name" -> user.name
+      "schoolId" -> user.schoolId,
+      "userName" -> user.user_name
     )
   }
 
