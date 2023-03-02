@@ -8,9 +8,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @ImplementedBy(classOf[UserRepositoryImpl])
 trait UserRepository {
-
   /** 全ユーザを取得します */
-  def findAll: Future[Seq[User]]
+  def findAll(): Future[Seq[User]]
 
 }
 
@@ -18,7 +17,7 @@ trait UserRepository {
 class UserRepositoryImpl @Inject()(userDao: UserDao)(implicit ex: ExecutionContext) extends UserRepository {
 
   /** @inheritdoc */
-  override def findAll: Future[Seq[User]] = {
+  override def findAll(): Future[Seq[User]] = {
     userDao.selectAll().map(_.map(User.ofEntity))
   }
 

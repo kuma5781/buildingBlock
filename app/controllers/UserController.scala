@@ -15,10 +15,11 @@ class UserController @Inject()(userService: UserService)(implicit ex: ExecutionC
     def writes(user: User): JsObject = Json.obj(
       "id" -> user.id,
       "schoolId" -> user.schoolId,
-      "userName" -> user.user_name
+      "userName" -> user.userName
     )
   }
 
+  /** ユーザ情報を全件取得します */
   def getUsers(): Action[AnyContent] = Action.async {
         userService.findUsers().map(users => Ok(Json.toJson(users)))
   }

@@ -8,7 +8,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class UserService @Inject()(userRepository: UserRepository)(implicit ec: ExecutionContext) {
   def findUsers(): Future[Seq[User]] = {
-    userRepository.findAll
+    userRepository.findAll()
   }
 
 
