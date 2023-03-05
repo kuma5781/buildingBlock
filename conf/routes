@@ -9,4 +9,9 @@ GET     /                           controllers.HomeController.index()
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
+# ユーザ情報を全件取得します
 GET     /user/all                   controllers.UserController.getUsers()
+
+# 結果一覧の情報を全件取得します
+GET     /result/all                 controllers.ResultController.getResults()
+
